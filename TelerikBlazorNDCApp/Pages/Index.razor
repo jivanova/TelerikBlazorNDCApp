@@ -3,6 +3,7 @@
 @using System.Collections.ObjectModel
 @inject GridDataService GridDataService
 @inject XlsxExportService XlsxExportService
+@inject PdfExportService PdfExportService
 
 <h4> NDC Attendees</h4>
 <TelerikButton OnClick="@OnXlsxExportHandler">XLSX Export</TelerikButton>
@@ -110,6 +111,7 @@
 
     async Task OnPdfExportHandler()
     {
-        return;
+        var stream = PdfExportService.Export(GridData);
+        // TODO: download the document
     }
 }

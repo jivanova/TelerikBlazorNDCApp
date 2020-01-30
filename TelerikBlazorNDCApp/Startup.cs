@@ -30,6 +30,7 @@ namespace TelerikBlazorNDCApp
             services.AddServerSideBlazor();
             services.AddSingleton<GridDataService>();
             services.AddSingleton<XlsxExportService>();
+            services.AddSingleton<PdfExportService>();
             services.AddTelerikBlazor();
         }
 

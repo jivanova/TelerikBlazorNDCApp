@@ -110,14 +110,14 @@
     {
         var byteData = XlsxExportService.Export(GridData);
 
-
         await DownloadFile(byteData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TelerikBlazorNDCApp.xlsx");
     }
 
     async Task OnPdfExportHandler()
     {
-        var stream = PdfExportService.Export(GridData);
-        // TODO: download the document
+        var byteData = PdfExportService.Export(GridData);
+
+        await DownloadFile(byteData, "application/pdf", "TelerikBlazorNDCApp.pdf");
     }
 
     async Task DownloadFile(byte[] byteData, string mimeType, string fileName)

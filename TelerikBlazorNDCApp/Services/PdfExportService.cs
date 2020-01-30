@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using Telerik.Windows.Documents.Spreadsheet.FormatProviders.Pdf;
 using Telerik.Windows.Documents.Spreadsheet.Model;
 using TelerikBlazorNDCApp.Models;
@@ -8,7 +8,7 @@ namespace TelerikBlazorNDCApp.Services
 {
     public class PdfExportService
     {
-        public Stream Export(IEnumerable<Attendee> source)
+        public byte[] Export(IEnumerable<Attendee> source)
         {
             int rowIndex = 0;
 
@@ -16,18 +16,20 @@ namespace TelerikBlazorNDCApp.Services
             Worksheet worksheet = workbook.Worksheets.Add();
 
             ExportRow(worksheet, rowIndex++, "Id", "CompanyName", "ContactName", "ContactTitle", "Address", "Country", "Phone", "City");
+            worksheet.Cells[0, 0, 0, 8].SetStyleName("Heading 1");
 
-            foreach (Attendee attendee in source)
+            foreach (Attendee attendee in source.Take(500))
             {
                 ExportRow(worksheet, rowIndex++, attendee.Id.ToString(), attendee.CompanyName, attendee.ContactName, attendee.ContactTitle, attendee.Address, attendee.Country, attendee.Phone, attendee.City);
             }
 
+            worksheet.Columns[0, 8].AutoFitWidth();
+
             PdfFormatProvider pdfFormatProvider = new PdfFormatProvider();
 
-            MemoryStream stream = new MemoryStream();
-            pdfFormatProvider.Export(workbook, stream);
+            byte[] byteArray = pdfFormatProvider.Export(workbook);
 
-            return stream;
+            return byteArray;
         }
 
         private void ExportRow(Worksheet worksheet, int rowIndex, string id, string companyName, string contactName,

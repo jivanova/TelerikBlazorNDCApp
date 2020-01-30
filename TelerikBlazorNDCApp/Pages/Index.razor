@@ -20,12 +20,12 @@
              ScrollMode="@GridScrollMode.Virtual"
              RowHeight="60"
              PageSize="10"
+             Height="460px"
              Sortable="true"
              Reorderable="true"
-             Resizable="true"
-             Height="460px">
+             Resizable="true">
     <GridColumns>
-        <GridColumn Field="@nameof(Attendee.Id)" Title="Id" />
+        <GridColumn Field="@nameof(Attendee.Id)" Width="75px" Title="Id" />
         <GridColumn Field="@nameof(Attendee.CompanyName)" Title="Company Name" />
         <GridColumn Field="@nameof(Attendee.ContactName)" Title="Contact Name" />
         <GridColumn Field="@nameof(Attendee.ContactTitle)" Title="Contact Title" />
@@ -60,8 +60,10 @@
     public ObservableCollection<Attendee> GridData { get; set; }
 
     public IEnumerable<Attendee> SelectedAttendees { get; set; } = new List<Attendee>();
+
     public Attendee SelectedAttendee
         => SelectedAttendees.FirstOrDefault();
+
     public List<Lecture> SchedulerData
         => SelectedAttendee?.Lectures ?? new List<Lecture>();
 

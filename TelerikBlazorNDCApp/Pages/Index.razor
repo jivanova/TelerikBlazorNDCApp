@@ -1,0 +1,36 @@
+﻿@page "/"
+
+@using System.Collections.ObjectModel
+@inject GridDataService GridDataService
+
+<TelerikGrid Data=@GridData 
+             Height="400px"
+             Resizable="true"
+             Reorderable="true"
+             Groupable="true">
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" Title="Id" />
+        <GridColumn Field="@nameof(Employee.FirstName)" Title="First Name" />
+        <GridColumn Field="@nameof(Employee.LastName)" Title="Last Name" />
+        <GridColumn Field="@nameof(Employee.Title)" />
+        <GridColumn Field="@nameof(Employee.BirthDate)" Title="Birth Date" />
+        <GridColumn Field="@nameof(Employee.HireDate)" Title="Hire Date" />
+    </GridColumns>
+</TelerikGrid>
+
+
+@code {
+    public ObservableCollection<Employee> GridData { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        var employees = await GridDataService.GetEmployeesAsync();
+
+        GridData = new ObservableCollection<Employee>(employees);
+    }
+}

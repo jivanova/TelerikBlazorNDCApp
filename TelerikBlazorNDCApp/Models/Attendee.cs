@@ -1,4 +1,6 @@
-﻿namespace TelerikBlazorNDCApp.Models
+﻿using System.Collections.Generic;
+
+namespace TelerikBlazorNDCApp.Models
 {
     public class Attendee
     {
@@ -17,5 +19,6 @@
         public string Phone { get; set; }
 
         public string City { get; set; }
+        public List<Lecture> Lectures { get; set; }
     }
 }

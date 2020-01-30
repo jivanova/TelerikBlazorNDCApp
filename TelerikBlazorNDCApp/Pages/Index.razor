@@ -3,11 +3,18 @@
 @using System.Collections.ObjectModel
 @inject GridDataService GridDataService
 
-<TelerikGrid Data=@GridData 
-             Height="400px"
-             Resizable="true"
+<h4> NDC Attendees</h4>
+<TelerikGrid Data=@GridData
+             @bind-SelectedItems="@SelectedAttendees"
+             SelectionMode="@GridSelectionMode.Single"
+             FilterMode="@GridFilterMode.FilterMenu"
+             ScrollMode="@GridScrollMode.Virtual"
+             RowHeight="60"
+             PageSize="10"
+             Sortable="true"
              Reorderable="true"
-             Groupable="true">
+             Resizable="true"
+             Height="460px">
     <GridColumns>
         <GridColumn Field="@nameof(Attendee.Id)" Title="Id" />
         <GridColumn Field="@nameof(Attendee.CompanyName)" Title="Company Name" />
@@ -19,10 +26,37 @@
         <GridColumn Field="@nameof(Attendee.Phone)" Title="Phone" />
     </GridColumns>
 </TelerikGrid>
+<br/><br/>
+@if (SelectedAttendees.Any())
+{
+    <h4>@SelectedAttendee.ContactName's Lecture Preferences</h4>
 
+    <TelerikScheduler Data="@SchedulerData"
+                      Date="@DateTime.Now"
+                      OnUpdate="@UpdateAppointment" OnCreate="@AddAppointment" OnDelete="@DeleteAppointment"
+                      AllowCreate="true" AllowDelete="true" AllowUpdate="true"
+                      StartField="@(nameof(Lecture.Start))"
+                      EndField="@(nameof(Lecture.End))"
+                      TitleField="@(nameof(Lecture.Title))"
+                      DescriptionField="@(nameof(Lecture.Description))"
+                      IsAllDayField="@(nameof(Lecture.IsAllDay))">
+        <SchedulerViews>
+            <SchedulerDayView StartTime="@DayStart" EndTime="@DayEnd" />
+        </SchedulerViews>
+    </TelerikScheduler>
+}
 
 @code {
     public ObservableCollection<Attendee> GridData { get; set; }
+
+    public IEnumerable<Attendee> SelectedAttendees { get; set; } = new List<Attendee>();
+    public Attendee SelectedAttendee
+        => SelectedAttendees.FirstOrDefault();
+    public List<Lecture> SchedulerData
+        => SelectedAttendee?.Lectures ?? new List<Lecture>();
+
+    public DateTime DayStart { get; set; } = new DateTime(2020, 1, 30, 8, 0, 0);
+    public DateTime DayEnd { get; set; } = new DateTime(2020, 1, 30, 20, 0, 0);
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,5 +68,31 @@
         var employees = await GridDataService.GetAttendeesAsync();
 
         GridData = new ObservableCollection<Attendee>(employees);
+    }
+
+    void UpdateAppointment(SchedulerUpdateEventArgs args)
+    {
+        Lecture item = (Lecture)args.Item;
+        var matchingItem = SchedulerData.FirstOrDefault(a => a.Id == item.Id);
+        if (matchingItem != null)
+        {
+            matchingItem.Title = item.Title;
+            matchingItem.Description = item.Description;
+            matchingItem.Start = item.Start;
+            matchingItem.End = item.End;
+            matchingItem.IsAllDay = item.IsAllDay;
+        }
+    }
+
+    void AddAppointment(SchedulerCreateEventArgs args)
+    {
+        Lecture item = args.Item as Lecture;
+        SchedulerData.Add(item);
+    }
+
+    void DeleteAppointment(SchedulerDeleteEventArgs args)
+    {
+        Lecture item = (Lecture)args.Item;
+        SchedulerData.Remove(item);
     }
 }

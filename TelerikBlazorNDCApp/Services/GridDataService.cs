@@ -9,6 +9,11 @@ namespace TelerikBlazorNDCApp.Services
 {
     public class GridDataService
     {
+        public static string[] LectureTitles = new[]
+        {
+            "Keynote: We are the Guardians of our Future", "SignalR Deep Dive: Building Servers", "Securing Serverless Applications in Azure", "Capability Mapping", "Serverless: Five Key Things you need to Know", "Empowering Soft Skills with Team Dynamics/Communication Skills (Software/Engineering Team/Projects)", "Workshop: Better, cleaner React with hooks: Part 1/2 ", "Make your custom .NET GC", "OpenID Connect & OAuth 2.0 – Security Best Practices", "Controlling Wildfires While Only Getting Singed.", "Shor's Algorithm is Scary NOW", "Delightful Durable Function Patterns", "Workshop: Better, cleaner React with hooks. Part 2/2", "Lightning Talks", "Application Diagnostics in .NET Core 3.1", "EVE Online: Defending our players from hackers and the evolution of account security", "Cynicism Doesn’t Build Products", "How To Secure Your MicroServices", "An introduction to Machine Learning using LEGO", "Workshop: Event-driven microservices: making sure each messages is processed exactly once. Part 1/2", "The OWASP Top Ten Proactive Controls 2018", "There are no snow days when you work remote.", "A Developer’s Introduction to Kubernetes", "Modernizing the enterprise desktop application", "Frontend in F#? Hold my beer!", "Workshop: Event-driven microservices: making sure each messages is processed exactly once. Part 2/2", "Rip It Up And Start Again?", "What you always wanted to know about Deep Learning, but were afraid to ask", "From WCF to gRPC", "Frictionless Frontends for Backend Developers", "Micro Frontends – a strive for fully verticalized systems", "Workshop: A Deep Dive in to Machine Learning in .NET. Part 1/2", "Blazor, a new framework for browser-based .NET apps", "How to Steal an Election", "There’s an Imposter in this room!", "A Developer's Introduction to Electronics", "Can TypeScript really make infrastructure management easy?", "Workshop: A Deep Dive in to Machine Learning in .NET. Part 2/2", "The Internet of Pwned Things", "From the OWASP Top Ten(s) to the OWASP ASVS", "The State of Vue.js in 2020 - Why You Should Make The Leap", "Predictive Maintenance - How Does Data Science Revolutionize the World of Machines?", "3D printed Bionic Hand a little IOT and a Xamarin Mobile App", "Workshop: Building an educational game with .NET Core and Unity3D. Part 1/2", "Machine Learning for .NET developers", "Blazor in more depth", "Introduction to GitHub Actions", "Angular and The Case for RxJS", "Building a real-time serverless app in Blazor using AWS", "Workshop: Building an educational game with .NET Core and Unity3D. Part 2/2", "Everything is Cyber-broken 2", "Keep it Clean: Why Bad Data Ruins Projects and How to Fix it", "Wait, I have to test the front end too?", "Real World Guide to Web API authentication on Azure", "How to hire great engineers", "Lightning Talks", "Beyond REST with GraphQL in .Net core", "Best practices for securing CI/CD pipeline", "Solving Tricky Coordination Problems in Stateless .NET Services", "Ordering the chaos - cleaning logs and ordering events in microservices", "How does designing your culture help your code?", "Workshop: gRPC with ASP.NET Core Workshop. Part 1/2", "Why Kubernetes is Not Enough", "25 Years of SSL - Secure(ish) Sockets Layer", "Svelte, cybernetically enhanced web apps", "Sprinkle some sparkle on it: Teaching Xamarin with Selfies", "Serverless containers with Knative and Cloud Run", "Workshop: gRPC with ASP.NET Core Workshop. Part 2/2", "DDD Really Matters!", "Turbocharged: Writing High-Performance C# and .NET Code", "Effective Microservice Communication and Conversation Patterns", "Challenges of Managing CoreFX repo", "Anatomy of a DDoS", "Change your habits: Modern techniques for modern C#", "Shrink The Web: How To Get Happier By Removing Crap", "How to code music?", "Alexa, ask Cortana to tell Google to...", "Single Page Architectures with VueJS and ASP.NET Core", "NDC Party + .NET Rocks Live Panel", "Building Trust in Teams", "Crash, bang, wallop: miscellaneous lessons from exploring a drum kit", "ML and the IoT: Living on the Edge", "The Perimeter Has Been Shattered: Attacking and Defending Mobility and IoT on the Enterprise Network", "Modernizing Large Frontends with Web Components", "Workshop: Learning Feedback with LEGO: The Buildin…Blocks of Giving and Receiving Feedback. Part 1/2", "Navigating microservices with .NET Core", "The Rise of Klintwalker – Mastering Your Inner Developer Part 2", "Common API Security Pitfalls", "Getting the best out of Entity Framework Core", "Deep Dive on Server-Side Blazor", "Workshop: Learning Feedback with LEGO: The Buildin…Blocks of Giving and Receiving Feedback. Part 2/2", "Drinking a river of IoT data with Akka.NET", "UX Design Fundamentals: What do your users really see", "Breaking black-box AI", "Big Data Analytics in Near-Real-Time with Apache Kafka Streams", "Fighting Back Against a Distracted World - Increasing your Focus and Self-motivation", "Workshop: Build your first real-world Svelte app. Part 1/2", "Lightning Talks", "Reinventing the Transaction Script", "Continuous Integration and Delivery for Databases"
+        };
+
         private static readonly int ItemsCount = 200000;
 
         private static readonly List<string> CompanyNames = new List<string> { "Bottom-Dollar Markets", "FISSA Fabrica Inter. Salchichas S.A.", "Hanari Carnes", "LILA-Supermercado", "Que Delícia", "QUICK-Stop", "Romero y tomillo", "Suprêmes délices", "Vins et alcools Chevalier", "Wartian Herkku", "Folies gourmandes", "Ricardo Adocicados", "Rattlesnake Canyon Grocery", "Familia Arquibaldo", "Laughing Bacchus Wine Cellars", "Mère Paillarde", "Morgenstern Gesundkost", "Queen Cozinha", "The Cracker Box", "Blondel père et fils", "Centro comercial Moctezuma", "Frankenversand", "France restauration", "Galería del gastrónomo", "Great Lakes Food Market" };
@@ -48,8 +53,29 @@ namespace TelerikBlazorNDCApp.Services
                     ContactTitle = ContactTitles[index],
                     Country = Countries[index],
                     Phone = Phones[index],
+                    Lectures = GenerateRandomLectures()
                 };
             }
+        }
+
+        public List<Lecture> GenerateRandomLectures()
+        {
+            return Enumerable.Range(1, 8).Select(index => GenerateLecture()).ToList();
+        }
+
+        public Lecture GenerateLecture()
+        {
+            var rng = new Random();
+            var baseDate = new DateTime(2020, 1, 30, 8, 0, 0);
+            var startDate = baseDate.AddHours(rng.Next(0, 12));
+
+            return new Lecture()
+            {
+                Title = LectureTitles[rng.Next(LectureTitles.Length)],
+                Start = startDate,
+                End = startDate.AddHours(1),
+                IsAllDay = false
+            };
         }
     }
 }

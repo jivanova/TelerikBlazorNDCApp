@@ -7,7 +7,7 @@ namespace TelerikBlazorNDCApp.Services
 {
     public class XlsxExportService
     {
-        public Stream Export(IEnumerable<Attendee> source)
+        public byte[] Export(IEnumerable<Attendee> source)
         {
             MemoryStream stream = new MemoryStream();
 
@@ -24,7 +24,7 @@ namespace TelerikBlazorNDCApp.Services
                 }
             }
 
-            return stream;
+            return stream.ToArray();
         }
 
         private void ExportRow(IWorksheetExporter worksheetExporter, string id, string companyName, string contactName,

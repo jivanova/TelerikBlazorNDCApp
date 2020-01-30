@@ -1,6 +1,9 @@
 ﻿@page "/"
 
 @using System.Collections.ObjectModel
+
+@inject IJSRuntime JSRuntime
+
 @inject GridDataService GridDataService
 @inject XlsxExportService XlsxExportService
 @inject PdfExportService PdfExportService
@@ -105,13 +108,20 @@
 
     async Task OnXlsxExportHandler()
     {
-        var stream = XlsxExportService.Export(GridData);
-        // TODO: download the document
+        var byteData = XlsxExportService.Export(GridData);
+
+
+        await DownloadFile(byteData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TelerikBlazorNDCApp.xlsx");
     }
 
     async Task OnPdfExportHandler()
     {
         var stream = PdfExportService.Export(GridData);
         // TODO: download the document
+    }
+
+    async Task DownloadFile(byte[] byteData, string mimeType, string fileName)
+    {
+        await JSRuntime.InvokeVoidAsync("saveFile", Convert.ToBase64String(byteData), mimeType, fileName);
     }
 }

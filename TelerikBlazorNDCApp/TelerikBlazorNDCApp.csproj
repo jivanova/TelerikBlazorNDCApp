@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Telerik.Documents.SpreadsheetStreaming" Version="2020.1.109" />
     <PackageReference Include="Telerik.UI.for.Blazor" Version="2.6.1" />
   </ItemGroup>
 

@@ -19,6 +19,7 @@ namespace TelerikBlazorNDCApp.Models
         public string Phone { get; set; }
 
         public string City { get; set; }
+
         public List<Lecture> Lectures { get; set; }
     }
 }

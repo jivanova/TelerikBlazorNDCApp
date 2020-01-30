@@ -2,8 +2,13 @@
 
 @using System.Collections.ObjectModel
 @inject GridDataService GridDataService
+@inject XlsxExportService XlsxExportService
 
 <h4> NDC Attendees</h4>
+<TelerikButton OnClick="@OnXlsxExportHandler">XLSX Export</TelerikButton>
+<TelerikButton OnClick="@OnPdfExportHandler">PDF Export</TelerikButton>
+<br /><br />
+
 <TelerikGrid Data=@GridData
              @bind-SelectedItems="@SelectedAttendees"
              SelectionMode="@GridSelectionMode.Single"
@@ -26,7 +31,8 @@
         <GridColumn Field="@nameof(Attendee.Phone)" Title="Phone" />
     </GridColumns>
 </TelerikGrid>
-<br/><br/>
+<br />
+<br />
 @if (SelectedAttendees.Any())
 {
     <h4>@SelectedAttendee.ContactName's Lecture Preferences</h4>
@@ -94,5 +100,16 @@
     {
         Lecture item = (Lecture)args.Item;
         SchedulerData.Remove(item);
+    }
+
+    async Task OnXlsxExportHandler()
+    {
+        var stream = XlsxExportService.Export(GridData);
+        // TODO: download the document
+    }
+
+    async Task OnPdfExportHandler()
+    {
+        return;
     }
 }

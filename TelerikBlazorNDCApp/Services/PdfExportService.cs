@@ -44,6 +44,12 @@ namespace TelerikBlazorNDCApp.Services
             worksheet.Cells[rowIndex, columnIndex++].SetValueAsText(city);
             worksheet.Cells[rowIndex, columnIndex++].SetValueAsText(country);
             worksheet.Cells[rowIndex, columnIndex++].SetValueAsText(phone);
+
+            if (rowIndex != 0 && rowIndex % 2 == 0)
+            {
+                var cellStyle = worksheet.Workbook.Styles.Where(p => p.Name.Contains("Accent1")).FirstOrDefault();
+                worksheet.Cells[rowIndex, 0, rowIndex, columnIndex].SetStyleName(cellStyle.Name);
+            }
         }
     }
 }

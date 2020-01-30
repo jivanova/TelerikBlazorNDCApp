@@ -22,6 +22,12 @@ namespace TelerikBlazorNDCApp.Services
                     CellStyle = titleStyle
                 };
 
+                SpreadCellStyle rowStyle = workbookExporter.CellStyles.Where(p => p.Name.Contains("Accent1")).FirstOrDefault();
+                SpreadCellFormat evenRowFormat = new SpreadCellFormat()
+                {
+                    CellStyle = rowStyle
+                };
+
                 using (IWorksheetExporter worksheetExporter = workbookExporter.CreateWorksheetExporter("Attendee information"))
                 {
                     for (int i = 0; i < columnWidths.Length; i++)
@@ -34,9 +40,17 @@ namespace TelerikBlazorNDCApp.Services
 
                     ExportRow(worksheetExporter, "Id", "CompanyName", "ContactName", "ContactTitle", "Address", "Country", "Phone", "City", titleFormat);
 
+                    int rowIndex = 1;
                     foreach (Attendee attendee in source.Take(10000))
                     {
-                        ExportRow(worksheetExporter, attendee.Id.ToString(), attendee.CompanyName, attendee.ContactName, attendee.ContactTitle, attendee.Address, attendee.Country, attendee.Phone, attendee.City);
+                        SpreadCellFormat currentRowFormat = null;
+                        if (rowIndex++ % 2 == 0)
+                        {
+                            currentRowFormat = evenRowFormat;
+                        }
+
+                        ExportRow(worksheetExporter, attendee.Id.ToString(), attendee.CompanyName, attendee.ContactName,
+                            attendee.ContactTitle, attendee.Address, attendee.Country, attendee.Phone, attendee.City, currentRowFormat);
                     }
                 }
             }

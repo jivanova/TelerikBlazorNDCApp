@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TelerikBlazorNDCApp.Models;
 
@@ -8,23 +6,24 @@ namespace TelerikBlazorNDCApp.Services
 {
     public class GridDataService
     {
-        public async Task<List<Employee>> GetEmployeesAsync()
+        public async Task<List<Customer>> GetCustomersAsync()
         {
-            return await Task.FromResult(GetEmployees());
+            return await Task.FromResult(GetCustomers());
         }
 
-        public List<Employee> GetEmployees()
+        public List<Customer> GetCustomers()
         {
-            return new List<Employee>()
+            return new List<Customer>()
             {
-                new Employee()
+                new Customer()
                 {
-                    EmployeeId = 1,
-                    FirstName = "Yoana",
-                    LastName = "Ivanova",
-                    Title = "Software Engineer",
-                    BirthDate = new DateTime(1992, 12, 10),
-                    HireDate = new DateTime(2012, 11, 19)
+                    Id = 1,
+                    Address = "Test1",
+                    CompanyName = "test",
+                    ContactName = "test",
+                    ContactTitle = "test",
+                    Country = "test",
+                    Phone = "test"
                 }
             };
         }

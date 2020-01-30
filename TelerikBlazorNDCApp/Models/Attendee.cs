@@ -1,6 +1,6 @@
 ﻿namespace TelerikBlazorNDCApp.Models
 {
-    public class Customer
+    public class Attendee
     {
         public int Id { get; set; }
 
@@ -15,5 +15,7 @@
         public string Country { get; set; }
 
         public string Phone { get; set; }
+
+        public string City { get; set; }
     }
 }

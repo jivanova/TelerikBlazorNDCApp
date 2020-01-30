@@ -9,19 +9,20 @@
              Reorderable="true"
              Groupable="true">
     <GridColumns>
-        <GridColumn Field="@nameof(Customer.Id)" Title="Id" />
-        <GridColumn Field="@nameof(Customer.CompanyName)" Title="Company Name" />
-        <GridColumn Field="@nameof(Customer.ContactName)" Title="Contact Name" />
-        <GridColumn Field="@nameof(Customer.ContactTitle)" Title="Contact Title"/>
-        <GridColumn Field="@nameof(Customer.Address)" Title="Address" />
-        <GridColumn Field="@nameof(Customer.Country)" Title="Country" />
-        <GridColumn Field="@nameof(Customer.Phone)" Title="Phone" />
+        <GridColumn Field="@nameof(Attendee.Id)" Title="Id" />
+        <GridColumn Field="@nameof(Attendee.CompanyName)" Title="Company Name" />
+        <GridColumn Field="@nameof(Attendee.ContactName)" Title="Contact Name" />
+        <GridColumn Field="@nameof(Attendee.ContactTitle)" Title="Contact Title" />
+        <GridColumn Field="@nameof(Attendee.Address)" Title="Address" />
+        <GridColumn Field="@nameof(Attendee.City)" Title="Address" />
+        <GridColumn Field="@nameof(Attendee.Country)" Title="Country" />
+        <GridColumn Field="@nameof(Attendee.Phone)" Title="Phone" />
     </GridColumns>
 </TelerikGrid>
 
 
 @code {
-    public ObservableCollection<Customer> GridData { get; set; }
+    public ObservableCollection<Attendee> GridData { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -30,8 +31,8 @@
 
     private async Task LoadData()
     {
-        var employees = await GridDataService.GetCustomersAsync();
+        var employees = await GridDataService.GetAttendeesAsync();
 
-        GridData = new ObservableCollection<Customer>(employees);
+        GridData = new ObservableCollection<Attendee>(employees);
     }
 }
